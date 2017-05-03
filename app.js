@@ -1,5 +1,35 @@
+// $(document).ready(init); 
+$(document).ready(justmap); 
+
 var map; 
-justmap();
+
+function init(){
+  $.ajax({
+    type: "GET",
+    url: "exercise_data.csv",
+    dataType: "text",
+    success: function(data) {
+      processData(data, justmap);
+    }
+  });
+}
+
+// function processData(allText, next) {
+//   console.log(Papa.parse(allText));
+//   csvarray = Papa.parse(allText);
+//   console.log(csvarray); 
+//   // next(csvarray);
+//   next();
+// }
+
+function processData(allText) {
+  console.log(Papa.parse(allText));
+  csvarray = Papa.parse(allText);
+  console.log(csvarray); 
+}
+
+
+// justmap();
 function justmap(){
   map = AmCharts.makeChart("chartdiv", {
     "type": "map",
@@ -25,10 +55,26 @@ function justmap(){
   });
 }
 
+// function preSelectCountries(list) {
+//   for(var i = 0; i < list.length; i++) {
+//     var area = map.getObjectById(list[i]);
+//     area.showAsSelected = true;
+//     map.returnInitialColor(area);
+//   }
+// }
+
 function preSelectCountries(list) {
-  for(var i = 0; i < list.length; i++) {
-    var area = map.getObjectById(list[i]);
-    area.showAsSelected = true;
-    map.returnInitialColor(area);
-  }
+  $.ajax({
+    type: "GET",
+    url: "exercise_data.csv",
+    dataType: "text",
+    success: function(data) {
+      processData(data);
+      for(var i = 0; i < list.length; i++) {
+        var area = map.getObjectById(list[i]);
+        area.showAsSelected = true;
+        map.returnInitialColor(area);
+      }
+    }
+  });
 }
